@@ -16,7 +16,7 @@ class SignalGraph:
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=t, y=data, mode="lines", name="Signal"))
         fig.update_layout(title="Time Domain", xaxis_title="Time (s)", yaxis_title="Amplitude", height=350)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     def plot_frequency_domain(self, st) -> None:
         data = self.signal.data
@@ -29,4 +29,4 @@ class SignalGraph:
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=freq, y=magnitude, mode="lines", name="FFT"))
         fig.update_layout(title="Frequency Domain", xaxis_title="Frequency (Hz)", yaxis_title="Magnitude", height=350)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
