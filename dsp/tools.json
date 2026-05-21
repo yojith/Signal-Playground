@@ -178,5 +178,23 @@
         "additionalProperties": false
       }
     }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "generate_noise",
+      "description": "Add white Gaussian noise to a signal",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "std": {
+            "type": "number",
+            "description": "Standard deviation of the Gaussian noise"
+          }
+        },
+        "required": ["std"],
+        "additionalProperties": false
+      }
+    }
   }
 ]

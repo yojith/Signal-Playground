@@ -1,18 +1,22 @@
-import sqlite3
+import os
 import json
 import numpy as np
+import psycopg2
+from dotenv import load_dotenv
+
 from signal_module import Signal
 
-DB_PATH = "state.db"
+load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 
 def init_db():
-    with sqlite3.connect(DB_PATH) as conn:
+    with psycopg2.connect(DATABASE_URL) as conn:
         cur = conn.cursor()
         cur.execute("""
         CREATE TABLE IF NOT EXISTS session_state (
             session_id TEXT PRIMARY KEY,
-            signal BLOB,
+            signal BYTEA,
             messages TEXT,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
@@ -33,12 +37,12 @@ def save_state(session_id: str, signal: Signal, messages: list):
     blob = _signal_to_blob(signal)
     messages_json = json.dumps(messages)
 
-    with sqlite3.connect(DB_PATH) as conn:
+    with psycopg2.connect(DATABASE_URL) as conn:
         cur = conn.cursor()
         cur.execute(
             """
         INSERT INTO session_state (session_id, signal, messages)
-        VALUES (?, ?, ?)
+        VALUES (%s, %s, %s)
         ON CONFLICT(session_id) DO UPDATE SET
             signal=excluded.signal,
             messages=excluded.messages,
@@ -51,12 +55,12 @@ def save_state(session_id: str, signal: Signal, messages: list):
 
 
 def load_state(session_id: str):
-    with sqlite3.connect(DB_PATH) as conn:
+    with psycopg2.connect(DATABASE_URL) as conn:
         cur = conn.cursor()
         cur.execute(
             """
         SELECT signal, messages FROM session_state
-        WHERE session_id=?
+        WHERE session_id=%s
         """,
             (session_id,),
         )
@@ -73,15 +77,13 @@ def load_state(session_id: str):
 
 
 def cleanup_old_sessions(hours=24):
-    with sqlite3.connect(DB_PATH) as conn:
+    with psycopg2.connect(DATABASE_URL) as conn:
         cur = conn.cursor()
-
         cur.execute(
             """
         DELETE FROM session_state
-        WHERE updated_at < datetime('now', ?)
+        WHERE updated_at < NOW() - INTERVAL %s
         """,
-            (f"-{hours} hours",),
+            (f"{hours} hours",),
         )
-
         conn.commit()
