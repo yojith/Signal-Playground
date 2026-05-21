@@ -1,0 +1,182 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "pitch_shift",
+      "description": "Shift audio pitch in semitones",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "semitones": {
+            "type": "integer",
+            "description": "Pitch shift amount"
+          }
+        },
+        "required": ["semitones"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "gain",
+      "description": "Apply gain multiplier",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "amount": { "type": "number", "description": "Gain multiplier" }
+        },
+        "required": ["amount"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "gain_db",
+      "description": "Apply gain in decibels",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "amount_db": { "type": "number", "description": "Gain in decibels" }
+        },
+        "required": ["amount_db"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "fir_filter",
+      "description": "Apply an FIR filter using custom filter coefficients",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "coefficients": {
+            "type": "array",
+            "description": "FIR filter coefficients",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": ["coefficients"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "rolling_avg",
+      "description": "Apply a rolling average (moving average) filter",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "window_size": {
+            "type": "integer",
+            "description": "Size of the averaging window in samples"
+          }
+        },
+        "required": ["window_size"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "generate_sines_phase",
+      "description": "Generate a sine wave mixture with per-frequency phase offsets",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "frequencies": {
+            "type": "array",
+            "description": "Frequencies of sine waves (Hz)",
+            "items": {
+              "type": "number"
+            }
+          },
+          "phases": {
+            "type": "array",
+            "description": "Phase offsets for each frequency (radians)",
+            "items": {
+              "type": "number"
+            }
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration of signal in seconds"
+          },
+          "sr": {
+            "type": "integer",
+            "description": "Sample rate (samples per second)"
+          }
+        },
+        "required": ["frequencies", "phases", "duration", "sr"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "generate_sines",
+      "description": "Generate a normalized sum of several sine waves or a single sine wave",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "frequencies": {
+            "type": "array",
+            "description": "Frequencies of sine waves (Hz)",
+            "items": {
+              "type": "number"
+            }
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration of signal in seconds"
+          },
+          "sr": {
+            "type": "integer",
+            "description": "Sample rate (samples per second)"
+          }
+        },
+        "required": ["frequencies", "duration", "sr"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "add_sines",
+      "description": "Add sinusoidal components to an existing signal",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "freqs": {
+            "type": "array",
+            "description": "Frequencies of sine waves to add (Hz)",
+            "items": {
+              "type": "number"
+            }
+          },
+          "amps": {
+            "type": "array",
+            "description": "Amplitudes corresponding to each frequency",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": ["freqs", "amps"],
+        "additionalProperties": false
+      }
+    }
+  }
+]
