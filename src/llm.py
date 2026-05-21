@@ -9,7 +9,7 @@ from openai import OpenAI
 from signal_module import Signal
 from dsp.registry import DSP_REGISTRY, TOOLS
 
-load_dotenv()  # Load .env file
+load_dotenv("../.env")  # Load .env file
 api_key = os.getenv("OPENAI_API_KEY")  # Get key from environment
 client = OpenAI(api_key=api_key)  # Create client
 

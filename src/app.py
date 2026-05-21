@@ -6,6 +6,12 @@ from graph import SignalGraph
 from llm import process_prompt
 from state_manager import save_state, load_state, init_db, cleanup_old_sessions
 
+# Set page name and favicon
+st.set_page_config(
+    page_title="Signal Playground",
+    page_icon="assets/favicon.png" # Podcast icons created by Risman Muhammad - Flaticon
+)
+
 # Initialize database and clean up old sessions on app start
 init_db()
 cleanup_old_sessions()
