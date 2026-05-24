@@ -196,5 +196,23 @@
         "additionalProperties": false
       }
     }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "convert_sr",
+      "description": "Convert the sample rate of a signal",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "new_sr": {
+            "type": "integer",
+            "description": "New sample rate (samples per second)"
+          }
+        },
+        "required": ["new_sr"],
+        "additionalProperties": false
+      }
+    }
   }
 ]
