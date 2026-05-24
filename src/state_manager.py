@@ -2,6 +2,7 @@ import os
 import json
 import numpy as np
 import psycopg2
+from io import BytesIO
 from dotenv import load_dotenv
 
 from signal_module import Signal
@@ -17,6 +18,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS session_state (
             session_id TEXT PRIMARY KEY,
             signal BYTEA,
+            sr INTEGER,
             messages TEXT,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
@@ -25,11 +27,20 @@ def init_db():
 
 
 def _signal_to_blob(signal: Signal) -> bytes:
-    return np.array(signal.data, dtype=np.float64).tobytes()
+    buffer = BytesIO()
+    np.save(buffer, signal.data)
+    buffer.seek(0)
+    return buffer.read()
 
 
-def _blob_to_signal(blob: bytes, sr: int = 16000) -> Signal:
-    data = np.frombuffer(blob, dtype=np.float64)
+def _blob_to_signal(blob: bytes, sr: int) -> Signal:
+    buffer = BytesIO(blob)
+    buffer.seek(0)
+    try:
+        data = np.load(buffer, allow_pickle=False)
+    except Exception as e:
+        print(f"Error loading signal from blob: {e}")
+        data = np.array([0]) # Empty signal as fallback
     return Signal(data, sr)
 
 
@@ -41,14 +52,15 @@ def save_state(session_id: str, signal: Signal, messages: list):
         cur = conn.cursor()
         cur.execute(
             """
-        INSERT INTO session_state (session_id, signal, messages)
-        VALUES (%s, %s, %s)
+        INSERT INTO session_state (session_id, signal, sr, messages)
+        VALUES (%s, %s, %s, %s)
         ON CONFLICT(session_id) DO UPDATE SET
             signal=excluded.signal,
+            sr=excluded.sr,
             messages=excluded.messages,
             updated_at=CURRENT_TIMESTAMP
         """,
-            (session_id, blob, messages_json),
+            (session_id, blob, signal.sr, messages_json),
         )
 
         conn.commit()
@@ -59,7 +71,7 @@ def load_state(session_id: str):
         cur = conn.cursor()
         cur.execute(
             """
-        SELECT signal, messages FROM session_state
+        SELECT signal, sr, messages FROM session_state
         WHERE session_id=%s
         """,
             (session_id,),
@@ -69,8 +81,8 @@ def load_state(session_id: str):
     if row is None:
         return Signal.empty(), []
 
-    signal_blob, messages_json = row
-    signal = _blob_to_signal(signal_blob)
+    signal_blob, sr, messages_json = row
+    signal = _blob_to_signal(signal_blob, sr)
     messages = json.loads(messages_json)
 
     return signal, messages

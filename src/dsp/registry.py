@@ -7,7 +7,7 @@ from typing import Callable
 
 # This dictionary contains all DSP functions
 DSP_REGISTRY: dict[str, Callable] = {}
-with open("dsp/tools.json", "r") as f:
+with open("src/dsp/tools.json", "r") as f:
     TOOLS = json.load(f)  # Load tool definitions from JSON
     print(f"Loaded {len(TOOLS)} DSP tools from JSON.")
 

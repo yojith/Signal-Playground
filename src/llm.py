@@ -23,7 +23,7 @@ class LLMResponse:
 
 def process_prompt(prompt: str, signal: Signal) -> LLMResponse:
     response = client.chat.completions.create(
-        model="gpt-5.4-nano",
+        model="gpt-5.4-mini",
         messages=[
             {"role": "system", "content": ("You are an audio DSP assistant. Choose the correct DSP tool for modifying audio signals.")},
             {"role": "user", "content": prompt},

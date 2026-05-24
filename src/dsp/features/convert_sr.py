@@ -27,6 +27,7 @@ def lookup_table(kernel: np.ndarray, offset, density):
     i = np.floor(pos).astype(int)
     frac = pos - i
 
+    i = np.clip(i, 0, len(kernel) - 2)  # Prevents out of bounds in the linear interpolation
     return kernel[i] * (1 - frac) + kernel[i + 1] * frac  # Linear interpolation so we don't lose info
 
 
@@ -52,7 +53,7 @@ def convert_sr(signal: Signal, new_sr: int) -> Signal:
 
         # We can't just simply repeat the old signal, we will lose information from the fractional position
         # To compensate, we will instead take a weighted sinc sum of nearby discrete points, with the weights being adjusted based on their distance from the cursor.
-        window = in_data[whole : whole + 2 * WIDTH]  # Due to the padding, we need to shift the whole index by WIDTH to get the correct window of input samples
+        window = in_data[whole : whole + 2 * WIDTH]  # Due to the padding, we need to consider the offset of WIDTH
         weights = lookup_table(kernel, frac - np.arange(-WIDTH, WIDTH), DENSITY)
         out.data[i] = np.dot(window, weights)
 

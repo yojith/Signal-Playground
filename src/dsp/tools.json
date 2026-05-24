@@ -201,13 +201,13 @@
     "type": "function",
     "function": {
       "name": "convert_sr",
-      "description": "Convert the sample rate of a signal",
+      "description": "Convert the sample rate of a signal. Supports upsampling and downsampling.",
       "parameters": {
         "type": "object",
         "properties": {
           "new_sr": {
             "type": "integer",
-            "description": "New sample rate (samples per second)"
+            "description": "New sample rate in Hz (samples per second)"
           }
         },
         "required": ["new_sr"],
