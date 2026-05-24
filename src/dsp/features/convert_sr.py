@@ -52,15 +52,8 @@ def convert_sr(signal: Signal, new_sr: int) -> Signal:
 
         # We can't just simply repeat the old signal, we will lose information from the fractional position
         # To compensate, we will instead take a weighted sinc sum of nearby discrete points, with the weights being adjusted based on their distance from the cursor.
-        window = in_data[whole - WIDTH : whole + WIDTH]
-        weights = np.array([lookup_table(kernel, frac - np.arange(-WIDTH, WIDTH), DENSITY)])
+        window = in_data[whole : whole + 2 * WIDTH]  # Due to the padding, we need to shift the whole index by WIDTH to get the correct window of input samples
+        weights = lookup_table(kernel, frac - np.arange(-WIDTH, WIDTH), DENSITY)
         out.data[i] = np.dot(window, weights)
 
     return out
-
-
-if __name__ == "__main__":
-    x = sinc_table(WIDTH, DENSITY)
-    y = lookup_table(x, 0, DENSITY)
-    print(x[262144 // 2])
-    print(y)
