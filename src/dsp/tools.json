@@ -400,6 +400,41 @@
   {
     "type": "function",
     "function": {
+      "name": "generate_sweep",
+      "description": "Generate a sine frequency sweep from a starting frequency to an ending frequency.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "start_freq": {
+            "type": "number",
+            "description": "Starting frequency in Hz"
+          },
+          "end_freq": {
+            "type": "number",
+            "description": "Ending frequency in Hz"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration of the sweep in seconds"
+          },
+          "sr": {
+            "type": "integer",
+            "description": "Sample rate (samples per second)"
+          },
+          "sweep_type": {
+            "type": "string",
+            "description": "Sweep type, either 'linear' or 'logarithmic'",
+            "enum": ["linear", "logarithmic"]
+          }
+        },
+        "required": ["start_freq", "end_freq", "duration", "sr"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
       "name": "add_square",
       "description": "Add square-wave components to an existing signal.",
       "parameters": {
