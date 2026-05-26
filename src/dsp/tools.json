@@ -200,7 +200,7 @@
   {
     "type": "function",
     "function": {
-      "name": "convert_sr",
+      "name": "resample_sinc",
       "description": "Convert the sample rate of a signal. Supports upsampling and downsampling.",
       "parameters": {
         "type": "object",

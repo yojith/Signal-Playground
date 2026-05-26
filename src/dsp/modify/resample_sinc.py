@@ -31,8 +31,8 @@ def lookup_table(kernel: np.ndarray, offset, density):
     return kernel[i] * (1 - frac) + kernel[i + 1] * frac  # Linear interpolation so we don't lose info
 
 
-@register_modify("convert_sr")
-def convert_sr(signal: Signal, new_sr: int) -> Signal:
+@register_modify("resample_sinc")
+def resample_sinc(signal: Signal, new_sr: int) -> Signal:
     out = signal.clone()
     old_sr = signal.sr
     if new_sr == old_sr:

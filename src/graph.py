@@ -30,3 +30,25 @@ class SignalGraph:
         fig.add_trace(go.Scatter(x=freq, y=magnitude, mode="lines", name="FFT"))
         fig.update_layout(title="Frequency Domain", xaxis_title="Frequency (Hz)", yaxis_title="Magnitude", height=350)
         st.plotly_chart(fig, width="stretch")
+
+    def plot_spectrogram(self, st, window_size: int = 512, hop_size: int | None = None, n_fft: int | None = None) -> None:
+        spec, freqs, times = self.signal.spectrogram(window_size=window_size, hop_size=hop_size, n_fft=n_fft)
+        if spec.size == 0:
+            return
+
+        fig = go.Figure(
+            data=go.Heatmap(
+                z=spec,
+                x=times,
+                y=freqs,
+                colorscale="Viridis",
+                colorbar=dict(title="dB"),
+            )
+        )
+        fig.update_layout(
+            title="Spectrogram",
+            xaxis_title="Time (s)",
+            yaxis_title="Frequency (Hz)",
+            height=350,
+        )
+        st.plotly_chart(fig, width="stretch")

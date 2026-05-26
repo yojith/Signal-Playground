@@ -44,6 +44,7 @@ def _build_analysis_message(conversation: list[dict[str, str]], tool_name: str, 
     response = client.chat.completions.create(
         model="gpt-5.4-mini",
         messages=messages,
+        max_tokens=180,
     )
 
     if not response.choices or not response.choices[0].message or not response.choices[0].message.content:
@@ -58,19 +59,22 @@ def process_prompt(prompt: str, signal: Signal, conversation: list[dict[str, str
             {
                 "role": "system",
                 "content": (
-                    "You are an audio DSP assistant. Choose the correct DSP tool to modify or analyze audio signals. "
-                    "For analyze tools, return the requested analysis result as a structured value so the app can summarize it."
+                    "You are an audio DSP assistant. Choose the correct DSP tool to modify or analyze audio signals when appropriate. "
+                    "If the user is asking about signal results, meanings, or wants a discussion, respond directly as a concise chat message. "
+                    "Limit your response length to keep token usage low."
                 ),
             },
             *conversation,
         ],
         tools=TOOLS,
         tool_choice="auto",
+        max_tokens=220,
     )
 
     msg = response.choices[0].message
     if not msg.tool_calls:
-        return LLMResponse(signal=signal, analysis=None, message="No DSP action taken.")
+        assistant_text = msg.content if msg.content else "No DSP action taken."
+        return LLMResponse(signal=signal, analysis=None, message=assistant_text)
 
     # Execute Tool
     tool_call = msg.tool_calls[0]
@@ -89,4 +93,4 @@ def process_prompt(prompt: str, signal: Signal, conversation: list[dict[str, str
         fn = ANALYZE_REGISTRY[name]
         analysis_result = fn(signal, **args)
         message = _build_analysis_message(conversation, name, analysis_result)
-        return LLMResponse(signal=signal, analysis=analysis_result, message=f"Executed `{name}` with {args}\n\n{message}")
+        return LLMResponse(signal=signal, analysis=analysis_result, message=message)

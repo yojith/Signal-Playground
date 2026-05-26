@@ -8,10 +8,23 @@ from .modify import generate_square
 from .modify import pitch_shift
 from .modify import rolling_avg
 from .modify import generate_noise
-from .modify import convert_sr
+from .modify import resample_sinc
 from .modify import truncate
 from .modify import low_pass
 from .modify import high_pass
+from .modify import band_pass
+from .modify import band_stop
+from .modify import iir_filter
+from .modify import all_pass_filter
+from .modify import time_stretch
+from .modify import delay
+from .modify import echo
+from .modify import window_signal
+from .modify import compressor
+from .modify import limiter
+from .modify import normalize
+from .modify import clip
+from .modify import harmonic_distortion
 
 from .analyze import duration
 from .analyze import max_frequency
@@ -19,3 +32,7 @@ from .analyze import max_volume
 from .analyze import sample_count
 from .analyze import sample_rate
 from .analyze import top_frequencies
+from .analyze import spectrogram
+from .analyze import rms_level
+from .analyze import zero_crossing_rate
+from .analyze import envelope

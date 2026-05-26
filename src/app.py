@@ -82,6 +82,7 @@ with right:
 
         graph = SignalGraph(sig)
         graph.plot_time_domain(st)
+        graph.plot_spectrogram(st)
         graph.plot_frequency_domain(st)
         st.info("Upload a WAV file to begin")
 
