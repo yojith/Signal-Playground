@@ -196,7 +196,8 @@
         "additionalProperties": false
       }
     }
-  },  {
+  },
+  {
     "type": "function",
     "function": {
       "name": "convert_sr",
@@ -363,6 +364,63 @@
           }
         },
         "required": ["cutoff_hz"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "generate_square",
+      "description": "Generate a normalized sum of several square waves or a single square wave.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "frequencies": {
+            "type": "array",
+            "description": "Frequencies of square waves (Hz)",
+            "items": {
+              "type": "number"
+            }
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration of signal in seconds"
+          },
+          "sr": {
+            "type": "integer",
+            "description": "Sample rate (samples per second)"
+          }
+        },
+        "required": ["frequencies", "duration", "sr"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "add_square",
+      "description": "Add square-wave components to an existing signal.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "freqs": {
+            "type": "array",
+            "description": "Frequencies of square waves to add (Hz)",
+            "items": {
+              "type": "number"
+            }
+          },
+          "amps": {
+            "type": "array",
+            "description": "Amplitudes corresponding to each square wave frequency",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": ["freqs", "amps"],
         "additionalProperties": false
       }
     }
