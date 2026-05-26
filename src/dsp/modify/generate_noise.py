@@ -1,10 +1,10 @@
 import numpy as np
 
 from signal_module import Signal
-from ..registry import register
+from ..registry import register_modify
 
 
-@register("generate_noise")
+@register_modify("generate_noise")
 def generate_noise(signal: Signal, std: float) -> Signal:
     out = signal.clone()
     rng = np.random.default_rng()

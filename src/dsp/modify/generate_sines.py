@@ -1,10 +1,10 @@
 import numpy as np
 
 from signal_module import Signal
-from ..registry import register
+from ..registry import register_modify
 
 
-@register("generate_sines_phase")
+@register_modify("generate_sines_phase")
 def generate_sines_phase(signal: Signal, frequencies: list[float], phases: list[float], duration: float, sr: int) -> Signal:
     t = np.linspace(0, duration, int(sr * duration), endpoint=False)
     data = np.zeros_like(t)
@@ -15,7 +15,7 @@ def generate_sines_phase(signal: Signal, frequencies: list[float], phases: list[
     return Signal(data, sr)
 
 
-@register("generate_sines")
+@register_modify("generate_sines")
 def generate_sines(signal: Signal, frequencies: list[float], duration: float, sr: int) -> Signal:
     t = np.linspace(0, duration, int(sr * duration), endpoint=False)
     data = np.zeros_like(t)

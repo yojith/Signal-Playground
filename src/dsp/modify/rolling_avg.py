@@ -1,10 +1,10 @@
 import numpy as np
 
 from signal_module import Signal
-from ..registry import register
+from ..registry import register_modify
 
 
-@register("rolling_avg")
+@register_modify("rolling_avg")
 def rolling_avg(signal: Signal, window_size: int) -> Signal:
     out = signal.clone()
     filter_window = np.ones(window_size) / window_size

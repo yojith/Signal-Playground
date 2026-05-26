@@ -12,8 +12,8 @@ class Signal:
         self.sr = sr
 
     @classmethod
-    def empty(cls) -> "Signal":
-        return Signal(np.array([0]), 16000)
+    def empty(cls, sr: int = 16000) -> "Signal":
+        return Signal(np.array([0]), sr)
 
     def is_empty(self) -> bool:
         return self.data.size == 1 and self.data[0] == 0

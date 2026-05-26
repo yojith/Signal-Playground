@@ -1,7 +1,7 @@
 import numpy as np
 
 from signal_module import Signal
-from ..registry import register
+from ..registry import register_modify
 
 WIDTH = 64
 DENSITY = 2048
@@ -31,7 +31,7 @@ def lookup_table(kernel: np.ndarray, offset, density):
     return kernel[i] * (1 - frac) + kernel[i + 1] * frac  # Linear interpolation so we don't lose info
 
 
-@register("convert_sr")
+@register_modify("convert_sr")
 def convert_sr(signal: Signal, new_sr: int) -> Signal:
     out = signal.clone()
     old_sr = signal.sr

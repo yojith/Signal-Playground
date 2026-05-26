@@ -196,8 +196,7 @@
         "additionalProperties": false
       }
     }
-  },
-  {
+  },  {
     "type": "function",
     "function": {
       "name": "convert_sr",
@@ -211,6 +210,159 @@
           }
         },
         "required": ["new_sr"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "sample_count",
+      "description": "Return the number of audio samples in the signal.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "sample_rate",
+      "description": "Return the sample rate of the signal in Hz.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "duration",
+      "description": "Return the duration of the signal in seconds.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "max_volume",
+      "description": "Return the maximum absolute volume (amplitude) of the signal.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "max_frequency",
+      "description": "Return the strongest frequency component present in the signal.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "top_frequencies",
+      "description": "Return the top N frequency components in the signal.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "top_n": {
+            "type": "integer",
+            "description": "Number of top frequency components to return"
+          }
+        },
+        "required": ["top_n"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "truncate",
+      "description": "Truncate the signal between start_time and end_time (seconds). Use the optional `step` parameter to skip samples (a hop size in seconds) while truncating.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "start_time": {
+            "type": ["number", "null"],
+            "description": "Start time in seconds (optional)"
+          },
+          "end_time": {
+            "type": ["number", "null"],
+            "description": "End time in seconds (optional)"
+          },
+          "step": {
+            "type": ["number", "null"],
+            "description": "Step size in seconds (optional)"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "low_pass",
+      "description": "Apply a low-pass FIR filter to remove frequencies above the cutoff.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cutoff_hz": {
+            "type": "number",
+            "description": "Cutoff frequency in Hz"
+          },
+          "num_taps": {
+            "type": "integer",
+            "description": "Number of FIR filter taps"
+          }
+        },
+        "required": ["cutoff_hz"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "high_pass",
+      "description": "Apply a high-pass FIR filter to remove frequencies below the cutoff.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cutoff_hz": {
+            "type": "number",
+            "description": "Cutoff frequency in Hz"
+          },
+          "num_taps": {
+            "type": "integer",
+            "description": "Number of FIR filter taps"
+          }
+        },
+        "required": ["cutoff_hz"],
         "additionalProperties": false
       }
     }

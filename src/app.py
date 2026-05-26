@@ -52,9 +52,13 @@ with left:
     if prompt:
         st.session_state.messages.append({"role": "user", "content": prompt})
         if st.session_state.signal is not None:
-            response = process_prompt(prompt, st.session_state.signal)
-            st.session_state.signal = response.signal
-            st.session_state.messages.append({"role": "assistant", "content": response.message})
+            response = process_prompt(prompt, st.session_state.signal, st.session_state.messages)
+            if response.analysis is not None:
+                # Analysis tools preserve the current signal and return a text result
+                st.session_state.messages.append({"role": "assistant", "content": response.message})
+            else:
+                st.session_state.signal = response.signal
+                st.session_state.messages.append({"role": "assistant", "content": response.message})
             st.rerun()
 
 # --------------------------------------------------
@@ -63,7 +67,19 @@ with left:
 with right:
     if st.session_state.signal is not None:
         sig = st.session_state.signal
-        st.audio(sig.to_audio_bytes(), format="audio/wav")
+        # Prepare audio bytes once and reuse for playback and download
+        buf = sig.to_audio_bytes()
+        audio_bytes = buf.getvalue()
+
+        st.audio(audio_bytes, format="audio/wav")
+        # Download current signal as WAV
+        st.download_button(
+            label="Download WAV",
+            data=audio_bytes,
+            file_name=f"signal_{st.session_state.session_id}.wav",
+            mime="audio/wav",
+        )
+
         graph = SignalGraph(sig)
         graph.plot_time_domain(st)
         graph.plot_frequency_domain(st)

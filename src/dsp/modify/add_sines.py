@@ -1,10 +1,10 @@
 import numpy as np
 
 from signal_module import Signal
-from ..registry import register
+from ..registry import register_modify
 
 
-@register("add_sines")
+@register_modify("add_sines")
 def add_sines(signal: Signal, freqs: list[float], amps: list[float]) -> Signal:
     out = signal.clone()
     t = np.arange(len(out.data)) / out.sr  # Time axis by dividing number of samples by sample rate
