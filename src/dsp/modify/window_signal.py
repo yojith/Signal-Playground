@@ -27,7 +27,6 @@ def window_signal(signal: Signal, window_type: str = "hann", size: int | None = 
 
     window = _window(window_type.lower(), size)
     envelope = np.ones(length)
-    half = size // 2
     envelope[:size] = window
     if size < length:
         envelope[-size:] = window

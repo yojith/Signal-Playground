@@ -44,7 +44,7 @@ def _build_analysis_message(conversation: list[dict[str, str]], tool_name: str, 
     response = client.chat.completions.create(
         model="gpt-5.4-mini",
         messages=messages,
-        max_tokens=180,
+        max_completion_tokens=180,
     )
 
     if not response.choices or not response.choices[0].message or not response.choices[0].message.content:
@@ -68,7 +68,7 @@ def process_prompt(prompt: str, signal: Signal, conversation: list[dict[str, str
         ],
         tools=TOOLS,
         tool_choice="auto",
-        max_tokens=220,
+        max_completion_tokens=220,
     )
 
     msg = response.choices[0].message

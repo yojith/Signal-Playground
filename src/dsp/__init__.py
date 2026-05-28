@@ -6,6 +6,7 @@ from .modify import gain
 from .modify import generate_sines
 from .modify import generate_square
 from .modify import generate_sweep
+from .modify import generate_step_sweep
 from .modify import pitch_shift
 from .modify import rolling_avg
 from .modify import generate_noise

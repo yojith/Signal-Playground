@@ -1,16 +1,22 @@
-import streamlit as st
+import io
 import uuid
+
+import numpy as np
+import streamlit as st
 
 from signal_module import Signal
 from graph import SignalGraph
 from llm import process_prompt
 from state_manager import save_state, load_state, init_db, cleanup_old_sessions
 
+
+@st.cache_data(show_spinner=False)
+def cached_audio_bytes(data_bytes: bytes, sr: int) -> bytes:
+    signal = Signal(np.frombuffer(data_bytes, dtype=np.float64), sr)
+    return signal.to_audio_bytes().getvalue()
+
 # Set page name and favicon
-st.set_page_config(
-    page_title="Signal Playground",
-    page_icon="assets/favicon.png" # Podcast icons created by Risman Muhammad - Flaticon
-)
+st.set_page_config(page_title="Signal Playground", page_icon="assets/favicon.png")  # Podcast icons created by Risman Muhammad - Flaticon
 
 # Initialize database and clean up old sessions on app start
 init_db()
@@ -68,8 +74,7 @@ with right:
     if st.session_state.signal is not None:
         sig = st.session_state.signal
         # Prepare audio bytes once and reuse for playback and download
-        buf = sig.to_audio_bytes()
-        audio_bytes = buf.getvalue()
+        audio_bytes = cached_audio_bytes(sig.data.tobytes(), sig.sr)
 
         st.audio(audio_bytes, format="audio/wav")
         # Download current signal as WAV

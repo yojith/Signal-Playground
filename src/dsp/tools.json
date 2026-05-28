@@ -435,6 +435,45 @@
   {
     "type": "function",
     "function": {
+      "name": "generate_step_sweep",
+      "description": "Generate a stepwise sine sweep consisting of discrete frequency intervals.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "start_freq": {
+            "type": "number",
+            "description": "Starting frequency in Hz"
+          },
+          "end_freq": {
+            "type": "number",
+            "description": "Ending frequency in Hz"
+          },
+          "num_intervals": {
+            "type": "integer",
+            "description": "Number of discrete frequency steps"
+          },
+          "interval_duration": {
+            "type": "number",
+            "description": "Duration of each interval in seconds"
+          },
+          "sr": {
+            "type": "integer",
+            "description": "Sample rate (samples per second)"
+          },
+          "sweep_type": {
+            "type": "string",
+            "description": "Interval spacing type: 'linear' or 'logarithmic'",
+            "enum": ["linear", "logarithmic"]
+          }
+        },
+        "required": ["start_freq", "end_freq", "num_intervals", "interval_duration", "sr"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
       "name": "add_square",
       "description": "Add square-wave components to an existing signal.",
       "parameters": {

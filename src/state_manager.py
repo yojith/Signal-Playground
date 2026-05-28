@@ -40,7 +40,7 @@ def _blob_to_signal(blob: bytes, sr: int) -> Signal:
         data = np.load(buffer, allow_pickle=False)
     except Exception as e:
         print(f"Error loading signal from blob: {e}")
-        data = np.array([0]) # Empty signal as fallback
+        data = np.array([0])  # Empty signal as fallback
     return Signal(data, sr)
 
 

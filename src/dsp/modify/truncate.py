@@ -8,7 +8,7 @@ from ..registry import register_modify
 def truncate(signal: Signal, start_time: float | None = None, end_time: float | None = None, step: float | None = None) -> Signal:
     if start_time is None and end_time is None and step is None:
         return signal.clone()
-    
+
     if start_time is None:
         start_sample = 0
     else:

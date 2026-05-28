@@ -4,6 +4,7 @@ import numpy as np
 import soundfile as sf
 from typing import BinaryIO
 
+
 class Signal:
     def __init__(self, data: np.ndarray, sr: int) -> None:
         self.data = data.astype(np.float64)
